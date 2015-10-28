@@ -26,7 +26,7 @@
 		<!--- main javascript --->
 		<script type="text/javascript" >
 			var onMessageHandler = function(event, token){
-				alert(JSON.stringify(event.data.ACTIONNAME));
+				//alert(JSON.stringify(event.data.ACTIONNAME));
 				var local_scope = angular.element(document.getElementById('managerColumnDiv')).scope();     	
         		local_scope.$apply( function() { local_scope.listenToWebSocket( event,token );} );  
 			}
