@@ -1,4 +1,4 @@
 component  output="false"
 {
-	this.name = "WFDemo1";
+	this.name = "dsDemo";
 }

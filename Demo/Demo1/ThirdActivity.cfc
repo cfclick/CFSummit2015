@@ -1,4 +1,4 @@
-component implements="IActivity" extends="BaseActivity" output="false" accessors="true" 
+component  implements="IActivity" extends="BaseActivity" output="false" accessors="true"
 {
 	property type="struct" name="ActivityCollection";
 	 
@@ -14,45 +14,59 @@ component implements="IActivity" extends="BaseActivity" output="false" accessors
 	
 	public void function onActivityStart()
 	{
-		sleep(3000);
+		
 		super.onActivityStart(this.getActivityCollection());
 	}
 	
 	public void function predecessor()
 	{
-		sleep(3000);
+		
 		super.predecessor();
-		if( !isNull(predecessorActivity)  && isInstanceOf( predecessorActivity, "IActivity" ) ){
-			predecessorActivity.process();
-		}
-				
+		if( !isNull(predecessorActivity)  && isInstanceOf( predecessorActivity, "IActivity" ) )	
+			predecessorActivity.process();			
 	}
 	
 	public boolean function execute()
 	{
-		sleep(3000);
+		
 		return super.execute(this);
 	}
 	
 	public void function process()
 	{
-		sleep(3000);
-		writelog( text="Im firstActivity process running", file="Demo"  );
+		try
+        {
+        	
+			var data = this.getActivityCollection();
+			if( isNull(data) || !structKeyExists( data,"firstName" ) )
+				writelog( text="I'm ThirdActivity process running", file=super.getLogFileName() );
+			else
+				writelog( text="I'm ThirdActivity process running for user : #data.firstName#", file=super.getLogFileName() );
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
+        	continue;
+        }
+
 	}
 	
 	public void function successor()
 	{
-		sleep(3000);
+		
 		super.successor();
 		
 		try
         {      	
 			if( !isNull(successorActivity)  && isInstanceOf( successorActivity, "IActivity" ) )
+			{
+				successorActivity.setActivityCollection( this.getActivityCollection() );
 				successorActivity.execute();
+			}
         }
         catch(Any e)
         {
-        	writelog(text=e.message, application='yes', file='WFExeption');
+        	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
         	continue;
         }
 
@@ -60,7 +74,7 @@ component implements="IActivity" extends="BaseActivity" output="false" accessors
 	
 	public void function onActivityEnd()
 	{
-		sleep(3000);
+		
 		super.onActivityEnd();
 	}
 
