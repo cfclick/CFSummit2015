@@ -1,52 +1,128 @@
-component output="false"  
+﻿component output="false"  
 {
-	import IActivity;
-	import Logger;
+	import IActivity;		
 	
-	function init( IActivity successor)
-	{
-		variables.log = new Logger();
-		variables.meta = getMetaData(successor);
-		writelog(text="------------------------------------------------------------", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
-		writelog(text="#meta.name# Activity initialization started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+	private string function getLogFileName(){
+		return "CFWF";
 	}
 	
-	void function onActivityStart( )
+	private string function getExceptionLogFileName(){
+		return "CFWFExceptions";
+	}
+	
+	private boolean function isApplication(){
+		return true;
+	}
+	
+	private numeric function getSleepTime(){
+		return 3000;
+	}
+	
+	public function init( IActivity successor)
 	{
-		writelog(text="#meta.name# Activity started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+		try
+        {
+        	variables.log = {};
+			variables.meta = getMetaData(successor);
+			writelog( text="----------------------------#meta.name#--------------------------------", application=isApplication(), file=getLogFileName() );
+			writelog( text="#meta.name# Activity initialization started", application=isApplication(), file=getLogFileName() );
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
+
+	}
+	
+	public void function onActivityStart( )
+	{
+		try
+        {
+        	writelog( text="#meta.name# Activity started", application=isApplication(), file=getLogFileName() );
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
+
 	}
 	
 	public boolean function execute(IActivity activity)
 	{
-		var act = arguments.activity;		
-		writelog(text="#meta.name# Activity execute started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
-		act.onActivityStart();
-		act.predecessor();	
-		act.process();	
-		act.successor();
-		act.onActivityEnd();
-		
-		return true;
+		try
+        {        	
+        	var act = arguments.activity;		
+			writelog(text="#meta.name# Activity executed", application=isApplication(), file=getLogFileName );	
+			 sleep( getSleepTime() );
+			act.onActivityStart();	
+			 sleep( getSleepTime() );		
+			act.predecessor();	
+			 sleep( getSleepTime() );
+			act.process();
+			 sleep( getSleepTime() );				
+			act.successor();
+			 sleep( getSleepTime() );
+			act.onActivityEnd();
+			
+			return true;
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
+
 	}
 	
-	void function predecessor()
+	public void function predecessor()
 	{
-		writelog(text="#meta.name# Activity predecessor started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+		try
+        {
+        	writelog( text="#meta.name# Activity predecessor started", application=isApplication(), file=getLogFileName() );
+		
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
 	}
 		
-	void function process()
+	public void function process()
 	{
-		writelog(text="#meta.name# Activity process started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+		try
+        {
+        	writelog( text="#meta.name# Activity process started", application=isApplication(), file=getLogFileName() );
+		
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
 	}
 		
-	void function successor()
+	public void function successor()
 	{
-		writelog(text="#meta.name# Activity successor started", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+		try
+        {
+        	writelog( text="#meta.name# Activity successor started", application=isApplication(), file=getLogFileName() );
+		
+        }
+        catch(Any e)
+        {
+        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        }
 	}
 	
-	void function onActivityEnd()
+	public void function onActivityEnd()
 	{
-		writelog(text="#meta.name# Activity ended", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
-		writelog(text="-------------------------------------------------------------------", application=log.getIsApplication(), file=log.getFileName(), type=log.getType());
+		try
+         {
+         	writelog( text="#meta.name# Activity ended", application=isApplication(), file=getLogFileName() );
+			writelog( text="----------------------------#meta.name#--------------------------------", application=isApplication(), file=getLogFileName() );
+		
+         }
+         catch(Any e)
+         {
+         	writelog(text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+         }
 	}
 }
