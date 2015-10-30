@@ -1,5 +1,6 @@
-<cfdirectory action="list" directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/" name="manager_completed" filter="*.pdf" >
-
+<cfdirectory action="list"  directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/" name="manager_completed" filter="*.pdf" >
+<cfdump var="#manager_completed#">
+<cfabort>
 <cfloop query="manager_completed">
 	<cffile action="delete"  file="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/#Name#" >
 </cfloop>
