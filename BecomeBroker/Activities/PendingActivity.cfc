@@ -98,10 +98,9 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 					filedelete("C:/ColdFusion11/cfusion/wwwroot/CFSummit2015/BecomeBroker/document_process/pending/temp/#agencyName#.pdf");
 				}
 		
-			}
-				
+			}				
 			else
-				writelog( text="I'm shirak process running for user : #data.firstName#", file=super.getLogFileName() );
+				writelog( text="No PDFs defined", file=super.getLogFileName() );
         }
         catch(Any e)
         {
