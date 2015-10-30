@@ -68,35 +68,50 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 	{
 		try
         {
-        	
+        	//Get the data and assign it to local var
 			var data = this.getActivityCollection();
-			if( isNull(data) || !structKeyExists(data,"clientPDF"))
+			
+			//check data has clientPDF stream
+			if( !isNull(data) || structKeyExists(data,"clientPDF"))
 			{
-				var level1 = data.clientPDF['topmostSubform[0]'];
+				//read pdf form from pdf content
+				cfpdfform(action="read", source=data.clientPDF, result="PDFStructure");
+				
+				//extract agency name from pdf form
+				var level1 = PDFStructure['topmostSubform[0]'];
 				var level2 = level1['Page1[0]'];
 				var agencyNameTemp = level2['Agency_Name[0]'];
+				//replace any empty space with _
 				var agencyname = Replace(agencyNameTemp,' ','_','All');
+				//extract agency email from pdf form
 				var email = level2['Primary_Contact_EMail[0]'];
 				
-				if( fileExists("c:\ColdFusion11\cfusion\wwwroot\CFSummit2015\BecomeBroker\document_process\pending\temp\#agencyName#.pdf") )
-				{
-					filedelete("c:\ColdFusion11\cfusion\wwwroot\CFSummit2015\BecomeBroker\document_process\pending\temp\#agencyName#.pdf"); 
-				}
+				var pending_temp_path = data.config.path.pending & "temp\";
 				
-				filewrite("c:\ColdFusion11\cfusion\wwwroot\CFSummit2015\BecomeBroker\document_process\pending\temp\#agencyName#.pdf",PDF.Content);
+				//add to activitycollection pdf file name
+				data.pdfFileName = "#agencyName#.pdf";
 				
+				//write file to temp location
+				filewrite( pending_temp_path & data.pdfFileName , data.clientPDF);
+				
+				
+				//start pdf writing process
 				var pdf = new PDF();				
-				pdf.setFlatten(ture);
-				pdf.setSaveoption('linear');
-				pdf.setSource('C:/ColdFusion11/cfusion/wwwroot/CFSummit2015/BecomeBroker/document_process/pending/temp/#agencyName#.pdf');
-				pdf.setDestination('C:/ColdFusion11/cfusion/wwwroot/CFSummit2015/BecomeBroker/document_process/pending/toAssemble/#agencyName#.pdf');
-				pdf.setOverwrite(true);
-				pdf.Action('write');	
-	
-				if (fileExists("C:/ColdFusion11/cfusion/wwwroot/CFSummit2015/BecomeBroker/document_process/pending/temp/#agencyName#.pdf"))
+				pdf.setFlatten(true)
+				.setSaveoption('linear')
+				.setSource( pending_temp_path & data.pdfFileName )
+				.setDestination( data.config.path.pending & "toAssemble\" & data.pdfFileName )
+				.setOverwrite(true)
+				.write();	
+				
+				//delete temp file from temp folder
+				if ( fileExists(pending_temp_path & data.pdfFileName ) )
 				{
-					filedelete("C:/ColdFusion11/cfusion/wwwroot/CFSummit2015/BecomeBroker/document_process/pending/temp/#agencyName#.pdf");
+					filedelete(pending_temp_path & data.pdfFileName );
 				}
+				
+				//update activityCollection with current state data
+				this.setActivityCollection(data);
 		
 			}				
 			else

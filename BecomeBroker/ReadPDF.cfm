@@ -1,15 +1,20 @@
+<!---<cfoutput>#getDirectoryFromPath( getCurrentTemplatePath() )#</cfoutput><cfabort>--->
 <cftry>
 	<cfif isdefined('PDF.Content')>
-		<cfpdfform action="read" source="#PDF.Content#" result="clientPDF">
-		</cfpdfform>
+		<!---<cfpdfform action="read" source="#PDF.Content#" result="clientPDF">
+		</cfpdfform>--->
 		<cfset activityManager = new ActivityManager() />
-		<cfset activityManager.executeBecomeBrokerProcess( clientPDF ) />
+		<cfset activityManager.executeBecomeBrokerProcess( PDF.Content ) />
 		
+		<h3>
+			Thank you you have successfully submitted your application to Century-National Insurance
+		</h3>
+		<p>
+			Your request is in approval process. Once approved, we will email your application for your signature.
+		</p>
 	</cfif>
 <cfcatch type="Any" >
-	<cfmail from="test" subject="debug" to="shirakgrigor@cnico.com" type="text/html" >
-		<cfdump var="#cfcatch#">
-	</cfmail>
+	<cflog text="#cfcatch.message#" >
 </cfcatch>
 </cftry>
 
