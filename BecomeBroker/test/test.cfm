@@ -7,6 +7,7 @@
 	activityCollection.directories[1] = activityCollection.config.path.pending;
 	activityCollection.directories[2] = activityCollection.config.path.approved;
 	activityCollection.directories[3] = activityCollection.config.path.assemble;
+	activityCollection.fileType = "*.pdf";
 	sweeper.setActivityCollection(ActivityCollection);
 	sweeper.execute(); 	
 </cfscript>
