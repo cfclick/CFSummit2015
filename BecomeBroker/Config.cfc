@@ -14,9 +14,11 @@ component
 	public struct function GetEnvironment()
 	{
 		var config = {};
+		
 		config.host.name = variables.machineName;
 		config.host.hostAddress = variables.InetAddress.localhost.getHostAddress();
 		config.host.port = CGI.serVER_PORT;
+		config.path.root = "/";
 		config.path.fileSeparator = variables.fileSeparator;
 		config.path.pending = variables.path & "\documents_process\pending\";
 		config.path.assemble = variables.path & "\documents_process\assemble\";
