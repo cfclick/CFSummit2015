@@ -81,64 +81,76 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 					var pending_temp_path = data.config.path.pending & "temp\";
 					var approved_manager_path = data.config.path.approved & "byManager\";
 					var assets = data.config.path.assets;
-														
-					try
-                    {
-                    	//create PDF realtime from any website
-                    	cfhtmltopdf(destination= assets & "htmlsource.pdf",
-		  							source="http://www.foxnews.com/",
-		  							orientation="landscape",
-		  							pagetype="letter",
-		  							margintop="0.5",
-		  							marginbottom="0.5",
-		  							marginleft="0.5",
-		  							marginright="0.5",
-		  							ownerpassword="owner",
-		  							userpassword="user",
-		  							encryption="RC4_128",
-		  							permissions="AllowPrinting,AllowCopy",
-		  							overwrite="true");
-                    }
-                    catch(Any e)
-                    {
-                    	writelog( text=e.message, file=super.getExceptionLogFileName() );
-                    	cfdocument(format="PDF" , filename= assets & "htmlsource.pdf"  ){
-                    		writedump(e);
-                    	}
-                    	
-                    	continue;
-                    }
-
-	  				try
-                    {
-                    	//package multiple files in single PDF
-                      	var pdf = new PDF();
-		  				pdf.setDestination( data.config.path.assemble & data.pdfFileName ).setOverwrite(true).setPackage(true);
-		  				pdf.addParam(source= assets & "cover_letter.docx");
-		  				pdf.addParam(source= data.config.path.pending & "toAssemble\" & data.pdfFileName);
-		  				pdf.addParam(source= assets & "mybackyard.jpg");
-		  				pdf.addParam(source= assets & "Curro.mp3");
-		  				pdf.addParam(source= assets & "jt021109-desktop.m4v");
-		  				pdf.addParam(source= assets & "CFSummit2015-digital-signature.pptx");
-		  				pdf.addParam(source= assets & "CFWfS_diagram.vsdx");
-		  				pdf.addParam(source= assets & "MyList.xlsx");
-		  				pdf.addParam(source= assets & "htmlsource.pdf", password="owner" );		  					  				
-		  				pdf.merge();
-                  	}
-                  	catch(Any e)
-                  	{
-                  		writelog( text=e.message, file=super.getExceptionLogFileName() );
-                  	}
-						
-					//copy file for manager signature
-					fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
 					
-					//delete files		
-					if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
-						filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
-	
-					if (fileExists( data.config.path.assemble & data.pdfFileName ))
-						filedelete(data.config.path.assemble & data.pdfFileName);
+					if( fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ) )
+					{
+						/*try
+	                    {
+	                    	//create PDF realtime from any website
+	                    	cfhtmltopdf(destination= assets & "htmlsource.pdf",
+			  							source="http://www.foxnews.com/",
+			  							orientation="landscape",
+			  							pagetype="letter",
+			  							margintop="0.5",
+			  							marginbottom="0.5",
+			  							marginleft="0.5",
+			  							marginright="0.5",
+			  							ownerpassword="owner",
+			  							userpassword="user",
+			  							encryption="RC4_128",
+			  							permissions="AllowPrinting,AllowCopy",
+			  							overwrite="true");
+	                    }
+	                    catch(Any e)
+	                    {
+	                    	writelog( text=e.message, file=super.getExceptionLogFileName() );
+	                    	cfdocument(format="PDF" , filename= assets & "htmlsource.pdf", overwrite="true", ownerpassword="owner"    ){
+	                    		writedump(e);
+	                    	}
+	                    	continue;
+	                    	
+	                    }finally{
+	                    	
+	                    	continue;
+	                    }
+						*/
+						
+		  				try
+	                    {
+	                    	//package multiple files in single PDF
+	                      	var pdf = new PDF();
+			  				pdf.setDestination( data.config.path.assemble & data.pdfFileName ).setOverwrite(true).setPackage(true);
+			  				pdf.addParam(source= assets & "cover_letter.docx");
+			  				pdf.addParam(source= data.config.path.pending & "toAssemble\" & data.pdfFileName);
+			  				pdf.addParam(source= assets & "mybackyard.jpg");
+			  				pdf.addParam(source= assets & "Curro.mp3");
+			  				pdf.addParam(source= assets & "jt021109-desktop.m4v");
+			  				pdf.addParam(source= assets & "CFSummit2015-digital-signature.pptx");
+			  				pdf.addParam(source= assets & "CFWfS_diagram.vsdx");
+			  				pdf.addParam(source= assets & "MyList.xlsx");
+			  				//pdf.addParam(source= assets & "htmlsource.pdf", password="owner" );		  					  				
+			  				pdf.merge();
+	                  	}
+	                  	catch(Any e)
+	                  	{
+	                  		writelog( text=e.message, file=super.getExceptionLogFileName() );
+	                  	}
+							
+						//copy file for manager signature
+						fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
+						
+						//delete files		
+						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
+							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
+		
+						if (fileExists( data.config.path.assemble & data.pdfFileName ))
+							filedelete(data.config.path.assemble & data.pdfFileName);
+					}else{
+						writelog( text="#data.pdfFileName# does not exists.", file=super.getLogFileName() );
+					}
+					
+														
+					
 				}else{
 					writelog( text="No config defined", file=super.getLogFileName() );
 				}						
