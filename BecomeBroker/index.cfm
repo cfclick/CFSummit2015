@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <cfset config = new Config().GetEnvironment() />
-<cfdump var="#config#">
+<!---<cfdump var="#config#">--->
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -37,8 +37,8 @@
 
 			<div class="btn-group btn-group-justified" role="group">
 				<cfoutput>
-                	<a class="btn btn-danger" href="http://#config.host.name#:#config.host.port#/CFSummit2015/BecomeBroker/clearall.cfm">Clear All</a>
-					<a class="btn btn-danger" href="http://#config.host.name#:#config.host.port#/CFSummit2015/BecomeBroker/index.cfm">Refresh</a>
+                	<a class="btn btn-danger" href="http://#config.host.name#:#config.host.port##config.path.root#/BecomeBroker/clearall.cfm">Clear All</a>
+					<a class="btn btn-danger" href="http://#config.host.name#:#config.host.port##config.path.root#/BecomeBroker/index.cfm">Refresh</a>
                 </cfoutput>
 			</div>
 			<br>
@@ -59,14 +59,14 @@
 				<div class="panel-body">
 					<cfdirectory 
 						action="list" 
-						directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/pending/toAssemble" 
+						directory="#config.path.pending#toAssemble" 
 						name="pendingList"
 						filter="*.pdf">																		
 						<ul>
 							<cfoutput query="pendingList">
 							<li> #Name#  - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/Assemble.cfm?agencyName=#Name#" class="btn btn-primary">Assemble</a> 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/pending/toAssemble/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Assemble.cfm?agencyName=#Name#" class="btn btn-primary">Assemble</a> 
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/pending/toAssemble/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
 							</cfoutput>
 						</ul>													
 				</div>
@@ -81,15 +81,14 @@
 				<div class="panel-body">
 					<cfdirectory 
 						action="list" 
-						directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/tosign" 
+						directory="#config.path.approved#\byManager\tosign" 
 						name="AssembledList"
 						filter="*.pdf">
 
 					<ul>
 						<cfoutput query="AssembledList">
-							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# <a href="http://localhost:8500/TestProjects/PDFStuff/Manager_Sign.cfm?agencyName=#Name#" class="btn btn-danger">Sign</a> 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/Manager_Sign.cfm?agencyName=#Name#&valid=true" class="btn btn-success">Valid Signature</a>
-								<a href="http://localhost:8500/TestProjects/PDFStuff/approved/byManager/tosign/#Name#" target="_blank" class="btn btn-info">View PDF</a> </li>
+							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# <a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Manager_Sign.cfm?agencyName=#Name#" class="btn btn-danger">Sign</a> 
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/approved/byManager/tosign/#Name#" target="_blank" class="btn btn-info">View PDF</a> </li>
 						</cfoutput>
 					</ul>
 				</div>
@@ -104,14 +103,13 @@
 				<div class="panel-body">
 					<cfdirectory 
 						action="list" 
-						directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/Approved/byManager/completed" 
+						directory="#config.path.approved#\byManager\completed" 
 						name="ApprovedList"
 						filter="*.pdf">
 						<ul>
 							<cfoutput query="ApprovedList">
-							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# <a href="http://localhost:8500/TestProjects/PDFStuff/VP_Sign.cfm?agencyName=#Name#" class="btn btn-danger">Sign</a> 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/VP_Sign.cfm?agencyName=#Name#&valid=true" class="btn btn-success">Valid Signature</a>
-								<a href="http://localhost:8500/TestProjects/PDFStuff/approved/byManager/completed/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
+							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# <a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/VP_Sign.cfm?agencyName=#Name#" class="btn btn-danger">Sign</a> 
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/approved/byManager/completed/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
 							</cfoutput>
 						</ul>
 				</div>
@@ -126,13 +124,13 @@
 				<div class="panel-body">
 					<cfdirectory 
 						action="list" 
-						directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/print/" 
+						directory="#config.path.print#" 
 						name="PrintList"
 						filter="*.pdf">
 						<ul>
 							<cfoutput query="PrintList">
 							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/print.cfm?agencyName=#Name#" target="_self" class="btn btn-default">Print PDF</a></li>
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/print.cfm?agencyName=#Name#" target="_self" class="btn btn-default">Print PDF</a></li>
 							</cfoutput>
 						</ul>
 				</div>
@@ -147,13 +145,13 @@
 				<div class="panel-body">
 					<cfdirectory 
 						action="list" 
-						directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/archive/temp" 
+						directory="#config.path.archive#\temp" 
 						name="ArchiveList"
 						filter="*.pdf">
 						<ul>
 							<cfoutput query="ArchiveList">
 							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# 
-								<a href="http://localhost:8500/TestProjects/PDFStuff/archive/temp/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
+								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/archive/temp/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
 							</cfoutput>
 						</ul>
 				</div>
