@@ -5,4 +5,5 @@ component
 	this.mappings = {};
 	this.mappings["/BecomeBroker"] = this.root;
 	this.mappings["/pending"] = this.root & "documents_process/pending/";
+	this.wschannels=[{name="BecomeBroker_Channel"}];
 }

@@ -112,6 +112,9 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 				
 				//update activityCollection with current state data
 				this.setActivityCollection(data);
+				
+				//Dispatch Activity completion
+				wsPublish("BecomeBroker_Channel",data);
 		
 			}				
 			else

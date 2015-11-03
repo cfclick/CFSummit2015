@@ -26,6 +26,7 @@
 
 		</script>
 		<![endif]-->
+		<script src="js/main.js" ></script>
 	</head>
 	<body>
 		<cfparam name="url.message" default="" >
@@ -148,12 +149,16 @@
 						directory="#config.path.archive#\temp" 
 						name="ArchiveList"
 						filter="*.pdf">
-						<ul>
+						<table class="table">
 							<cfoutput query="ArchiveList">
-							<li>#Name# - #DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# 
-								<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/archive/temp/#Name#" target="_blank" class="btn btn-info">View PDF</a></li>
+							<tr>
+								<td>#Name#</td>
+								<td>#DateTimeFormat(DateLastModified,'mm/dd/yyyy hh:mm tt')# </td>
+								<td><a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/archive/temp/#Name#" target="_blank" class="btn btn-info">View PDF</a></td>
+							</tr>
 							</cfoutput>
-						</ul>
+						</table>
+					
 				</div>
 			</div>
 		</div>
@@ -166,5 +171,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
 
 		</script>
+		
+		<cfwebsocket name="BecomeBroker_websoket" onmessage="onMessageHandler" onopen="onOpenHandler" subscribeto="BecomeBroker_Channel" />
 	</body>
 </html>
