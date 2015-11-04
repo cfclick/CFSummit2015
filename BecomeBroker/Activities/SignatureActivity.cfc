@@ -70,20 +70,27 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 	
 		        	var destination = "";
 		        	var source = "";
-		        	
+		        	data.directories = [];
 		        	switch(data.certFile){
 		        		
 		        		case "CFSummit_Manager.pfx":
 		        		{
 		        			destination = approved_manager_path & "completed\" & data.pdfFileName ;
 		        			source = approved_manager_path & "tosign\" & data.pdfFileName;
+
+							data.directories[1] = approved_manager_path & "tosign\";
+							data.fileType = "*.pdf";	
 		        			break;
 		        		}
 		        		
 		        		case "CFSummit_VP.pfx":
 		        		{
 		        			destination = print_path & data.pdfFileName;
-		        			source = approved_manager_path & "tosign\" & data.pdfFileName;
+		        			source = data.config.path.assemble & data.pdfFileName;
+		        			
+							data.directories[1] = data.config.path.assemble;
+							data.directories[2] = approved_manager_path & "completed\";
+							data.fileType = "*.pdf";
 		        			break;
 		        		}
 		        	}
@@ -96,11 +103,20 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		        	pdfPack.setpackage(true);
 		        	pdfPack.Merge();
 		        	
+		        	
+		        	data.directories[3] = data.config.path.approved & "temp\";
+		        	this.setActivityCollection(data);
+		        	
+		 	
+		        	
 		        	if( fileExists(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName) )
 						filedelete(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName);
-		        	
-		        	/*if( fileExists(approved_manager_path & "tosign\" & data.pdfFileName) )
-						filedelete(approved_manager_path & "tosign\" & data.pdfFileName);*/
+		        	/*
+		        	if( fileExists(approved_manager_path & "tosign\" & data.pdfFileName) )
+						filedelete(approved_manager_path & "tosign\" & data.pdfFileName);
+						
+					if( fileExists(approved_manager_path & "completed\" & data.pdfFileName ))
+						filedelete(approved_manager_path & "completed\" & data.pdfFileName);*/
 				}
 				else
 				{

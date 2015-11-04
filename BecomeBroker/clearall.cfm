@@ -1,4 +1,9 @@
-<cfdirectory action="list"  directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/" name="manager_completed" filter="*.pdf" >
+<cfscript>
+	activityManager = new ActivityManager();
+	activityManager.executeSweeperProcess();
+</cfscript>
+
+<!---<cfdirectory action="list"  directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/" name="manager_completed" filter="*.pdf" >
 <cfdump var="#manager_completed#">
 <cfabort>
 <cfloop query="manager_completed">
@@ -58,4 +63,4 @@
 <cfset message = "All PDFs deleted successfully">
 <cfset type = "success">
 
-<cflocation url="http://localhost:8500/TestProjects/index.cfm?message=#message#&type=#type#" >
+<cflocation url="http://localhost:8500/TestProjects/index.cfm?message=#message#&type=#type#" >--->

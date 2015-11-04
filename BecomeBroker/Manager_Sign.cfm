@@ -15,7 +15,8 @@
 			activityCollection.signaturePassword = "123456";
 			activityCollection.config = {};
 			activityCollection.config = new Config().GetEnvironment();
-			signatureActivity = new Activities.SignatureActivity();
+			sweeperActivity = new Activities.SweeperActivity(); 
+			signatureActivity = new Activities.SignatureActivity(sweeperActivity);
 			signatureActivity.setActivityCollection( activityCollection );
 			signatureActivity.execute();
 			message = "Application #activityCollection.pdfFileName# signed by Manager successfully";

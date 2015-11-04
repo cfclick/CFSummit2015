@@ -143,8 +143,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
 							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
 		
-						if (fileExists( data.config.path.assemble & data.pdfFileName ))
-							filedelete(data.config.path.assemble & data.pdfFileName);
+						/*if (fileExists( data.config.path.assemble & data.pdfFileName ))
+							filedelete(data.config.path.assemble & data.pdfFileName);*/
 					}else{
 						writelog( text="#data.pdfFileName# does not exists.", file=super.getLogFileName() );
 					}

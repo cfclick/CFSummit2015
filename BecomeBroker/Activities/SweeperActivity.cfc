@@ -78,14 +78,20 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 				for( var dir in data.directories )
 				{
 					var files = "";
-					cfdirectory( action="list", 
+					if(!isNull(data.pdfFileName) && fileExists(dir & data.pdfFileName) )
+						fileDelete(dir  & "\" & data.pdfFileName);
+					else{
+						cfdirectory( action="list", 
 							 	 directory = dir,
 							 	 filter = data.fileType,
 							 	 name = "files",
 							 	 recurse = true  );
-					for(var file in files){
-						fileDelete(file.directory & "\" & file.name);
+						for(var file in files){
+							
+								fileDelete(file.directory & "\" & file.name);
+						}
 					}
+					
 				}
 		
 			}				

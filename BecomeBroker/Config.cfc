@@ -19,12 +19,13 @@ component
 		config.host.hostAddress = variables.InetAddress.localhost.getHostAddress();
 		config.host.port = CGI.serVER_PORT;
 		config.path.root = "/";
+		config.path.app = variables.path;
 		config.path.fileSeparator = variables.fileSeparator;
-		config.path.pending = variables.path & "\documents_process\pending\";
-		config.path.assemble = variables.path & "\documents_process\assemble\";
-		config.path.approved = variables.path & "\documents_process\approved\";
-		config.path.archive = variables.path & "\documents_process\archive\";
-		config.path.print = variables.path & "\documents_process\print\";
+		config.path.pending = config.path.app & "\documents_process\pending\";
+		config.path.assemble = config.path.app & "\documents_process\assemble\";
+		config.path.approved = config.path.app & "\documents_process\approved\";
+		config.path.archive = config.path.app & "\documents_process\archive\";
+		config.path.print = config.path.app & "\documents_process\print\";
 		config.path.assets = variables.path & "\assets\";
 		
 		return config;		
