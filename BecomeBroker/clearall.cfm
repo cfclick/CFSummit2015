@@ -1,7 +1,13 @@
 <cfscript>
+	config = {};
+	config = new Config().GetEnvironment();
 	activityManager = new ActivityManager();
 	activityManager.executeSweeperProcess();
+	message = "All PDFs deleted successfully";
+	type = "success";
+	cflocation( url="http://" & config.host.name & ":" & config.host.port & config.path.root & "/BecomeBroker/index.cfm?message=#message#&type=#type#");
 </cfscript>
+
 
 <!---<cfdirectory action="list"  directory="C:/ColdFusion11/cfusion/wwwroot/TestProjects/PDFStuff/approved/byManager/completed/" name="manager_completed" filter="*.pdf" >
 <cfdump var="#manager_completed#">

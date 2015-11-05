@@ -1,8 +1,20 @@
-var onMessageHandler = function(event, token){
-	alert(JSON.stringify(event.data));
-	
-}
+var app = angular.module("BecomeBroker",[]);
 
-var onOpenHandler = function(event){
+app.controller("MainController", function($scope){
 	
-}
+	$scope.message = "";
+	
+	$scope.listenToWebSocket = function(aEvent,aToken) 
+	{
+		$scope.currentMessage = {}; //holds result of current received data from server
+	 	if(aEvent.data)
+	 	{
+	 		if(aEvent.data)
+	 		{
+	 			if(aEvent.data.refresh)
+	 			
+				$scope.message = $scope.message + aEvent.data.MESSAGE  + "\n";
+			}
+		}						
+     }
+})

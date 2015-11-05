@@ -105,18 +105,11 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		        	
 		        	
 		        	data.directories[3] = data.config.path.approved & "temp\";
-		        	this.setActivityCollection(data);
-		        	
-		 	
+		        	this.setActivityCollection(data);		 	
 		        	
 		        	if( fileExists(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName) )
 						filedelete(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName);
-		        	/*
-		        	if( fileExists(approved_manager_path & "tosign\" & data.pdfFileName) )
-						filedelete(approved_manager_path & "tosign\" & data.pdfFileName);
-						
-					if( fileExists(approved_manager_path & "completed\" & data.pdfFileName ))
-						filedelete(approved_manager_path & "completed\" & data.pdfFileName);*/
+		        
 				}
 				else
 				{
@@ -130,8 +123,11 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         }
         catch(Any e)
         {
+        	data.message ="*Error* " & e.message;
+        	wsPublish("BecomeBroker_Channel",data);
         	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
-        	continue;
+        	//continue;
+        	onActivityEnd();
         }
 
 	}

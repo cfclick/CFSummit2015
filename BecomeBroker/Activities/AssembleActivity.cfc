@@ -112,8 +112,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 	                    }finally{
 	                    	
 	                    	continue;
-	                    }
-						*/
+	                    }*/
+						
 						
 		  				try
 	                    {
@@ -143,8 +143,11 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
 							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
 		
-						/*if (fileExists( data.config.path.assemble & data.pdfFileName ))
-							filedelete(data.config.path.assemble & data.pdfFileName);*/
+						//Dispatch Activity completion
+						data.refresh = true;//refresh the webpage
+						data.message = "**************** Assemble Completed **************";
+						wsPublish("BecomeBroker_Channel",data);
+						
 					}else{
 						writelog( text="#data.pdfFileName# does not exists.", file=super.getLogFileName() );
 					}
@@ -162,6 +165,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         }
         catch(Any e)
         {
+        	data.message ="*Error* " & e.message;
+        	wsPublish("BecomeBroker_Channel",data);
         	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
         	continue;
         }

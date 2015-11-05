@@ -25,11 +25,14 @@
         	variables.log = {};
 			variables.meta = getMetaData(successor);
 			writelog( text="----------------------------#meta.name#--------------------------------", application=isApplication(), file=getLogFileName() );
-			writelog( text="#meta.name# Activity initialization started", application=isApplication(), file=getLogFileName() );
+			data.message = meta.name & "Activity initialization started";
+			writelog( text=data.message, application=isApplication(), file=getLogFileName() );			
+			wsPublish("BecomeBroker_Channel",data);
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
         }
 
 	}
@@ -38,11 +41,14 @@
 	{
 		try
         {
+        	data.message = meta.name & " Activity started";
         	writelog( text="#meta.name# Activity started", application=isApplication(), file=getLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
         }
 
 	}
@@ -52,7 +58,9 @@
 		try
         {        	
         	var act = arguments.activity;		
-			writelog(text="#meta.name# Activity executed", application=isApplication(), file=getLogFileName );	
+        	data.message = meta.name & " Activity executed";
+			writelog(text=data.message, application=isApplication(), file=getLogFileName );	
+			wsPublish("BecomeBroker_Channel",data);
 			 sleep( getSleepTime() );
 			act.onActivityStart();	
 			 sleep( getSleepTime() );		
@@ -68,7 +76,9 @@
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
         }
 
 	}
@@ -77,12 +87,16 @@
 	{
 		try
         {
-        	writelog( text="#meta.name# Activity predecessor started", application=isApplication(), file=getLogFileName() );
+        	data.message = meta.name & " Activity predecessor started";
+        	writelog( text=data.message, application=isApplication(), file=getLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
 		
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
         }
 	}
 		
@@ -90,12 +104,16 @@
 	{
 		try
         {
-        	writelog( text="#meta.name# Activity process started", application=isApplication(), file=getLogFileName() );
+        	data.message = meta.name & " Activity process started";
+        	writelog( text=data.message, application=isApplication(), file=getLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
 		
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
         }
 	}
 		
@@ -103,12 +121,16 @@
 	{
 		try
         {
-        	writelog( text="#meta.name# Activity successor started", application=isApplication(), file=getLogFileName() );
+        	data.message = meta.name & " Activity successor started";
+        	writelog( text=data.message, application=isApplication(), file=getLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
 		
         }
         catch(Any e)
         {
-        	writelog( text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+        	data.message = meta.name & " *Error* " & e.message;
+        	writelog( text=data.message, application=isApplication(), file=getExceptionLogFileName() );
+        	wsPublish("BecomeBroker_Channel",data);
         }
 	}
 	
@@ -116,13 +138,17 @@
 	{
 		try
          {
-         	writelog( text="#meta.name# Activity ended", application=isApplication(), file=getLogFileName() );
+         	data.message = meta.name & " Activity ended";
+         	writelog( text=data.message, application=isApplication(), file=getLogFileName() );
 			writelog( text="----------------------------#meta.name#--------------------------------", application=isApplication(), file=getLogFileName() );
+			wsPublish("BecomeBroker_Channel",data);
 		
          }
          catch(Any e)
          {
-         	writelog(text=e.message, application=isApplication(), file=getExceptionLogFileName() );
+         	data.message = meta.name & " *Error* " & e.message;
+         	writelog(text=data.message, application=isApplication(), file=getExceptionLogFileName() );
+         	wsPublish("BecomeBroker_Channel",data);
          }
 	}
 }

@@ -114,6 +114,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 				this.setActivityCollection(data);
 				
 				//Dispatch Activity completion
+				data.refresh = false;//refresh the webpage
 				wsPublish("BecomeBroker_Channel",data);
 		
 			}				
@@ -122,6 +123,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         }
         catch(Any e)
         {
+        	data.message ="*Error* " & e.message;
+        	wsPublish("BecomeBroker_Channel",data);
         	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
         	continue;
         }

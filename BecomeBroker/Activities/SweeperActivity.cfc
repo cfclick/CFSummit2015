@@ -70,29 +70,40 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         {
         	//Get the data and assign it to local var
 			var data = this.getActivityCollection();
-			
+			var dir = "";
 			//check data has clientPDF stream
 			if( !isNull(data) || structKeyExists(data,"directories"))
 			{
 				//you logic is here
-				for( var dir in data.directories )
+				if( isArray(data.directories) && arraylen( data.directories ) > 0 )
 				{
-					var files = "";
-					if(!isNull(data.pdfFileName) && fileExists(dir & data.pdfFileName) )
-						fileDelete(dir  & "\" & data.pdfFileName);
-					else{
-						cfdirectory( action="list", 
-							 	 directory = dir,
-							 	 filter = data.fileType,
-							 	 name = "files",
-							 	 recurse = true  );
-						for(var file in files){
-							
-								fileDelete(file.directory & "\" & file.name);
+					for( dir in data.directories )
+					{
+						//writelog( text="current directory: " & dir, file=super.getLogFileName() );
+						var files = "";
+						if( isdefined("dir") )
+						{
+							if(!isNull(data.pdfFileName) && fileExists(dir & data.pdfFileName) )
+								fileDelete(dir  & "\" & data.pdfFileName);
+							else
+							{
+								cfdirectory( action="list", 
+									 	 directory = dir,
+									 	 filter = data.fileType,
+									 	 name = "files",
+									 	 recurse = true  );
+								var file = "";	 	 
+								for( file in files )
+								{
+									fileDelete( file.directory & "\" & file.name );
+								}
+							}
 						}
+						
+						
 					}
-					
 				}
+				
 		
 			}				
 			else
@@ -100,6 +111,9 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         }
         catch(Any e)
         {
+        	data.message ="*Error* " & e.message;
+        	data.message = "**************** Spweeping completed **************";
+        	wsPublish("BecomeBroker_Channel",data);
         	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
         	continue;
         }
