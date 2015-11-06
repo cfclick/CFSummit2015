@@ -38,10 +38,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         {
         	//Dependencies
         	//pdfFileName
-        	//signaturePassword
-        	//Signature file
-        	//Signature PDF
-        	//Destination
+        	//printer
+
         	//Get the data and assign it to local var
 			var data = this.getActivityCollection();
 			
@@ -50,66 +48,21 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 			{
 				//make sure you have configuration data				
 				if( structKeyExists(data,"config") )
-				{
-					var approved_manager_path = data.config.path.approved & "byManager\";
-					var approved_vp_path = data.config.path.approved & "byVP\";
+				{					
 					var print_path = data.config.path.print;
-					var assets = data.config.path.assets;
 					
-					var pdf = new PDF();
-					cfpdf(  action="sign",
-							source=assets & data.signaturePDFFile,
-							destination=  data.config.path.approved & "temp\temp_signature_" & data.pdfFileName,
-							pages="1",
-							Height="50",
-							Width="250",
-							position="60,470",
-							overwrite=true,
-							keystore=assets & "signatures\" & data.certFile,
-							keystorepassword= data.signaturePassword  );
-	
-		        	var destination = "";
-		        	var source = "";
-		        	data.directories = [];
-		        	switch(data.certFile){
-		        		
-		        		case "CFSummit_Manager.pfx":
-		        		{
-		        			destination = approved_manager_path & "completed\" & data.pdfFileName ;
-		        			source = approved_manager_path & "tosign\" & data.pdfFileName;
+					if( fileExists( print_path & data.pdfFileName ) )
+					{
+						cfprint( type = "pdf",
+					 			 source = print_path & data.pdfFileName,
+					 			 printer = data.printer,
+					 			 password = "owner" );
+					}else{
+						writelog( text="No datato print. File #print_path & data.pdfFileName# does not exist", file=super.getLogFileName() );
+					}
 
-							data.directories[1] = approved_manager_path & "tosign\";
-							data.fileType = "*.pdf";	
-		        			break;
-		        		}
-		        		
-		        		case "CFSummit_VP.pfx":
-		        		{
-		        			destination = print_path & data.pdfFileName;
-		        			source = data.config.path.assemble & data.pdfFileName;
-		        			
-							data.directories[1] = data.config.path.assemble;
-							data.directories[2] = approved_manager_path & "completed\";
-							data.fileType = "*.pdf";
-		        			break;
-		        		}
-		        	}
-		        	
-		        	var pdfPack = new PDF();
-		        	pdfPack.setDestination( destination )
-		        	.setOverwrite(true);
-		        	pdfPack.AddParam( source=source );
-		        	pdfPack.AddParam( source=data.config.path.approved & "temp\temp_signature_" & data.pdfFileName );
-		        	pdfPack.setpackage(false);
-		        	pdfPack.Merge();
-		        	
-		        	
-		        	data.directories[3] = data.config.path.approved & "temp\";
 		        	this.setActivityCollection(data);		 	
-		        	
-		        	if( fileExists(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName) )
-						filedelete(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName);
-		        
+		        		        
 				}
 				else
 				{
@@ -160,7 +113,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		super.onActivityEnd();
 		var data = this.getActivityCollection();
 		data.refresh = true;//refresh the webpage
-		data.message = "******** #data.certFile# Signature Completed ********";
+		data.message = "******** Printing job completed ********";
 		wsPublish("BecomeBroker_Channel",data);
 		abort;
 	}

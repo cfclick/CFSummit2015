@@ -30,8 +30,8 @@
 				type = "danger";
             	continue;
             }finally{
-            	message = "Something wrong happen!";
-				type = "danger";
+            	//message = "Something wrong happen!";
+				//type = "danger";
             	cflocation( url="http://" & activityCollection.config.host.name & ":" & activityCollection.config.host.port & activityCollection.config.path.root & "BecomeBroker/index.cfm?message=#message#&type=#type#");
             }
 

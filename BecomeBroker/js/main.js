@@ -8,13 +8,14 @@ app.controller("MainController", function($scope){
 	{
 		$scope.currentMessage = {}; //holds result of current received data from server
 	 	if(aEvent.data)
-	 	{
-	 		if(aEvent.data)
-	 		{
-	 			if(aEvent.data.refresh)
-	 			
-				$scope.message = $scope.message + aEvent.data.MESSAGE  + "\n";
+	 	{	 			
+			$scope.message = $scope.message + aEvent.data.MESSAGE  + "\n";
+			
+			if(aEvent.data.REFRESH)
+			{
+				location.reload();
 			}
+	 				
 		}						
      }
 })

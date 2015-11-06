@@ -1,4 +1,10 @@
+
+
 <!DOCTYPE html>
+<!--- 
+		THIS CODE IS FOR DEMO PURPOSE 
+		NOT TO DEMONSTRATE BEST PRACTICES
+--->
 <cfset config = new Config().GetEnvironment()/>
 <!---<cfdump var="#config#">--->
 <html lang="en" ng-app="BecomeBroker">
@@ -35,6 +41,16 @@
 			var onOpenHandler = function(event){
 				
 			}
+			
+			function print(url){
+				alert(url);
+				printer = document.getElementById("printerName").value;
+				alert(printer);
+				page = url + "&printer=" + printer;
+				alert(page);
+				
+				window.location = page;// "http://Shirak-Dell:80/CFSummit2015/BecomeBroker/print.cfm?agencyName=Verdugo_Insurance.pdf&printer=Samsung M2020 Series";
+			}
 		</script>
 	</head>
 	<body>
@@ -67,7 +83,7 @@
 						</cfif>
 					</cfoutput>
 				
-					<div class="panel panel-default">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<h3 class="panel-title">
 								Pending Assembly
@@ -76,13 +92,17 @@
 						<div class="panel-body">
 							<cfdirectory action="list" directory="#config.path.pending#toAssemble" name="pendingList" 
 							             filter="*.pdf">
-							<ul>
+							<table class="table table-striped">
+								<tr>
+									<th>File Name</th>
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
 								<cfoutput query="pendingList">
-									<li>
-										#Name# 
-										- 
-										#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')#
-										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Assemble.cfm?agencyName=#Name#" 
+								<tr>
+									<td>#Name# </td>
+									<td>#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')#</td>
+									<td><a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Assemble.cfm?agencyName=#Name#" 
 										   class="btn btn-primary">
 											Assemble
 										</a>
@@ -90,13 +110,15 @@
 										   target="_blank" class="btn btn-info">
 											View PDF
 										</a>
-									</li>
+										</td>
+								</tr>
 								</cfoutput>
-							</ul>
+							</table>
+							
 						</div>
 					</div>
 					
-					<div class="panel panel-default">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<h3 class="panel-title">
 								Pending Manager Signature
@@ -105,28 +127,32 @@
 						<div class="panel-body">
 							<cfdirectory action="list" directory="#config.path.approved#\byManager\tosign" 
 							             name="AssembledList" filter="*.pdf">
-						
-							<ul>
+							<table class="table table-striped">
+								<tr>
+									<th>File Name</th>
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
 								<cfoutput query="AssembledList">
-									<li>
-										#Name# 
-										- 
-										#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')# 
-										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Manager_Sign.cfm?agencyName=#Name#" 
+								<tr>
+									<td>#Name#</td>
+									<td>#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')# </td>
+									<td><a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/Manager_Sign.cfm?agencyName=#Name#" 
 										   class="btn btn-danger">
 											Sign
 										</a>
 										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/approved/byManager/tosign/#Name#" 
 										   target="_blank" class="btn btn-info">
 											View PDF
-										</a>
-									</li>
+										</a></td>
+								</tr>
 								</cfoutput>
-							</ul>
+							</table>
+							
 						</div>
 					</div>
 					
-					<div class="panel panel-default">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<h3 class="panel-title">
 								Pending VP Signature
@@ -135,51 +161,71 @@
 						<div class="panel-body">
 							<cfdirectory action="list" directory="#config.path.approved#\byManager\completed" 
 							             name="ApprovedList" filter="*.pdf">
-							<ul>
+							<table class="table table-striped">
+								<tr>
+									<th>File Name</th>
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
 								<cfoutput query="ApprovedList">
-									<li>
-										#Name# 
-										- 
-										#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')# 
-										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/VP_Sign.cfm?agencyName=#Name#" 
+								<tr>
+									<td>#Name#</td>
+									<td>#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')#</td>
+									<td><a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/VP_Sign.cfm?agencyName=#Name#" 
 										   class="btn btn-danger">
 											Sign
 										</a>
 										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/documents_process/approved/byManager/completed/#Name#" 
 										   target="_blank" class="btn btn-info">
 											View PDF
-										</a>
-									</li>
+										</a></td>
+								</tr>
 								</cfoutput>
-							</ul>
+								</table>
+							
 						</div>
 					</div>
 					
-					<div class="panel panel-default">
+					
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								To Print
+								To Print								
+								<cfset printers = ListToArray(GetPrinterList()) />
+							
+										<select name="printerName" id="printerName">
+											<option value="">Select printer</option>
+											<cfloop array="#printers#" index="item" >
+												<cfoutput><option value="#item#" >#item#</option></cfoutput>
+											</cfloop>
+										</select>
 							</h3>
+							
 						</div>
 						<div class="panel-body">
 							<cfdirectory action="list" directory="#config.path.print#" name="PrintList" filter="*.pdf">
-							<ul>
+							<table class="table table-striped">
+								<tr>
+									<th>File Name</th>
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
 								<cfoutput query="PrintList">
-									<li>
-										#Name# 
-										- 
-										#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')#
-										<a href="http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/print.cfm?agencyName=#Name#" 
-										   target="_self" class="btn btn-default">
+								<tr>
+									<td>#Name# </td>
+									<td>#DateTimeFormat(DateLastModified, 'mm/dd/yyyy hh:mm tt')#</td>
+									<td><button name="printBtn" id="printBtn" onclick="print('http://#config.host.name#:#config.host.port##config.path.root#BecomeBroker/print.cfm?agencyName=#Name#')" class="btn btn-default">
 											Print PDF
-										</a>
-									</li>
+										</button></td>
+								</tr>
 								</cfoutput>
-							</ul>
+							</table>
+							
 						</div>
 					</div>
 					
-					<div class="panel panel-default">
+					
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<h3 class="panel-title">
 								Archived
@@ -188,7 +234,12 @@
 						<div class="panel-body">
 							<cfdirectory action="list" directory="#config.path.archive#\temp" name="ArchiveList" 
 							             filter="*.pdf">
-							<table class="table">
+							<table class="table table-striped">
+								<tr>
+									<th>File Name</th>
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
 								<cfoutput query="ArchiveList">
 									<tr>
 										<td>
@@ -211,6 +262,7 @@
 				</div>
 				
 				<div class="col-lg-4">
+					
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<h3 class="panel-title">
@@ -222,6 +274,18 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Lib (Listener)
+							</h3>
+						</div>
+						<div class="panel-body">
+							
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</div>

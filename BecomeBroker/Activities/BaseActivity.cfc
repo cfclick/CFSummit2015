@@ -58,9 +58,9 @@
 		try
         {        	
         	var act = arguments.activity;		
-        	data.message = meta.name & " Activity executed";
+        	//data.message = meta.name & " Activity executed";
 			writelog(text=data.message, application=isApplication(), file=getLogFileName );	
-			wsPublish("BecomeBroker_Channel",data);
+			//wsPublish("BecomeBroker_Channel",data);
 			 sleep( getSleepTime() );
 			act.onActivityStart();	
 			 sleep( getSleepTime() );		

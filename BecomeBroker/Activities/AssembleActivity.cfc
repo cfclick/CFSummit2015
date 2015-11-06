@@ -143,10 +143,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
 							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
 		
-						//Dispatch Activity completion
-						data.refresh = true;//refresh the webpage
-						data.message = "**************** Assemble Completed **************";
-						wsPublish("BecomeBroker_Channel",data);
+						
 						
 					}else{
 						writelog( text="#data.pdfFileName# does not exists.", file=super.getLogFileName() );
@@ -212,6 +209,10 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		//IF THIS ACTIVITY HAS SUCCESSORS ALL SUCCESSORS WILL CONTINUE TO RUN
 		//IF YOU WANT TO END SUCCESSOR ACTIVITY ADD ABORT ON SUCCESSOR ONACTIVITYEND METHOD.
 		super.onActivityEnd();
+		//Dispatch Activity completion
+		data.refresh = true;//refresh the webpage
+		data.message = "**************** Assemble Completed **************";
+		wsPublish("BecomeBroker_Channel",data);
 	}
 
 }
