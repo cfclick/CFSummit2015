@@ -63,7 +63,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 							pages="1",
 							Height="50",
 							Width="250",
-							position="60,470",
+							position="#data.position.x#,#data.position.y#",
 							overwrite=true,
 							keystore=assets & "signatures\" & data.certFile,
 							keystorepassword= data.signaturePassword  );
@@ -95,14 +95,28 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		        		}
 		        	}
 		        	
-		        	var pdfPack = new PDF();
-		        	pdfPack.setDestination( destination )
-		        	.setOverwrite(true);
-		        	pdfPack.AddParam( source=source );
-		        	pdfPack.AddParam( source=data.config.path.approved & "temp\temp_signature_" & data.pdfFileName );
-		        	pdfPack.setpackage(false);
-		        	pdfPack.Merge();
+		        	writelog( text=destination, file=super.getLogFileName() );
+		        	writelog( text=source, file=super.getLogFileName() );
 		        	
+		        	try
+                    {
+                    	var pdfPack = new PDF();
+			        	pdfPack.setDestination( destination )
+			        	.setOverwrite(true);
+			        	pdfPack.AddParam( source=source );
+			        	pdfPack.AddParam( source=data.config.path.approved & "temp\temp_signature_" & data.pdfFileName );
+			        	pdfPack.setpackage(false);
+			        	pdfPack.Merge();
+                    }
+                    catch(Any e)
+                    {
+                    	data.message ="*Error* " & e.message;
+			        	wsPublish("BecomeBroker_Channel",data);
+			        	writelog( text=e.detail, application=super.isApplication(), file=super.getExceptionLogFileName() );
+			        	//continue;
+			        	onActivityEnd();
+                    	
+                    }		        	
 		        	
 		        	data.directories[3] = data.config.path.approved & "temp\";
 		        	this.setActivityCollection(data);		 	

@@ -45,11 +45,14 @@
 			function print(url){
 				alert(url);
 				printer = document.getElementById("printerName").value;
+				email = document.getElementById('sendEmail').checked;
+				
+				alert(email);
 				alert(printer);
-				page = url + "&printer=" + printer;
+				page = url + "&printer=" + printer + "&email=" + email;
 				alert(page);
 				
-				window.location = page;// "http://Shirak-Dell:80/CFSummit2015/BecomeBroker/print.cfm?agencyName=Verdugo_Insurance.pdf&printer=Samsung M2020 Series";
+				window.location = page;// "http://Shirak-Dell:80/CFSummit2015/BecomeBroker/print.cfm?agencyName=Verdugo_Insurance.pdf&printer=" + printer;
 			}
 		</script>
 	</head>
@@ -199,6 +202,8 @@
 												<cfoutput><option value="#item#" >#item#</option></cfoutput>
 											</cfloop>
 										</select>
+										
+								<input type="checkbox" name="sendEmail" id="sendEmail" /> Email 
 							</h3>
 							
 						</div>

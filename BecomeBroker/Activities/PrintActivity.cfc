@@ -58,7 +58,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 					 			 printer = data.printer,
 					 			 password = "owner" );
 					}else{
-						writelog( text="No datato print. File #print_path & data.pdfFileName# does not exist", file=super.getLogFileName() );
+						writelog( text="No data to print. File #print_path & data.pdfFileName# does not exist", file=super.getLogFileName() );
 					}
 
 		        	this.setActivityCollection(data);		 	
@@ -79,15 +79,14 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         	data.message ="*Error* " & e.message;
         	wsPublish("BecomeBroker_Channel",data);
         	writelog( text=e.message, application=super.isApplication(), file=super.getExceptionLogFileName() );
-        	//continue;
-        	onActivityEnd();
+        	continue;
+        	//onActivityEnd();
         }
 
 	}
 	
 	public void function successor()
-	{
-		
+	{		
 		super.successor();
 		
 		try
@@ -115,7 +114,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		data.refresh = true;//refresh the webpage
 		data.message = "******** Printing job completed ********";
 		wsPublish("BecomeBroker_Channel",data);
-		abort;
+		//abort;
 	}
 
 }

@@ -13,6 +13,8 @@
 			activityCollection.signaturePDFFile = "BecomeBrokerSignaturePage.pdf";
 			activityCollection.certFile = "CFSummit_VP.pfx";
 			activityCollection.signaturePassword = "123456";
+			activityCollection.position.x = "60";
+			activityCollection.position.y = "370";
 			activityCollection.config = {};
 			activityCollection.config = new Config().GetEnvironment();
 			try
@@ -35,14 +37,14 @@
             	cflocation( url="http://" & activityCollection.config.host.name & ":" & activityCollection.config.host.port & activityCollection.config.path.root & "BecomeBroker/index.cfm?message=#message#&type=#type#");
             }
 
-			cflocation( url="http://" & config.host.name & ":" & config.host.port & config.path.root & "/BecomeBroker/index.cfm?message=#message#&type=#type#");
+			cflocation( url="http://" & activityCollection.config.host.name & ":" & activityCollection.config.host.port & activityCollection.config.path.root & "/BecomeBroker/index.cfm?message=#message#&type=#type#");
 			
 	    }
 	    catch(Any e)
 	    {
 	    	message = e.message;
 			type = "danger";
-			cflocation( url="http://" & config.host.name & ":" & config.host.port & config.path.root & "/BecomeBroker/index.cfm?message=#message#&type=#type#");
+			cflocation( url="http://" & activityCollection.config.host.name & ":" & activityCollection.config.host.port & activityCollection.config.path.root & "/BecomeBroker/index.cfm?message=#message#&type=#type#");
 			
 	    }
 	

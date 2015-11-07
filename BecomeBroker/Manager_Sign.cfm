@@ -12,6 +12,8 @@
 			activityCollection.pdfFileName = agencyName;
 			activityCollection.signaturePDFFile = "BecomeBrokerSignaturePage.pdf";
 			activityCollection.certFile = "CFSummit_Manager.pfx";
+			activityCollection.position.x = "60";
+			activityCollection.position.y = "470";
 			activityCollection.signaturePassword = "123456";
 			activityCollection.config = {};
 			activityCollection.config = new Config().GetEnvironment();

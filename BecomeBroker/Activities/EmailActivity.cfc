@@ -53,10 +53,16 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 					
 					if( fileExists( print_path & data.pdfFileName ) )
 					{
-						/*cfmail( from="CFWorkflow" ,subject="Please sign attached document" ,to="shirakavakian@gmail.com", type="text/html"    )
-						{
-						
-						}*/
+						savecontent variable="mailBody"{ 
+			                WriteOutput("Your request to become Broker has been approved. Please sign attached attached document"); 
+			            }
+			            var mailService = new Mail();     
+			            mailService.setTo("shirakavakian@gmail.com"); 
+			            mailService.setFrom("cfworkflow@cfflex.com"); 
+			            mailService.setSubject("Please sign attached document");
+
+			            mailService.addParam(file=print_path & data.pdfFileName,type="application/pdf",remove=false); 
+			            mailService.send(body=mailBody); 
 						
 					}else{
 						writelog( text="No data to email. File #print_path & data.pdfFileName# does not exist", file=super.getLogFileName() );
