@@ -13,8 +13,8 @@
 			activityCollection.signaturePDFFile = "BecomeBrokerSignaturePage.pdf";
 			activityCollection.certFile = "CFSummit_VP.pfx";
 			activityCollection.signaturePassword = "123456";
-			activityCollection.position.x = "60";
-			activityCollection.position.y = "370";
+			activityCollection.hasSignatureField = true;
+			activityCollection.signatureFieldName = "VP_Signature";
 			activityCollection.config = {};
 			activityCollection.config = new Config().GetEnvironment();
 			try

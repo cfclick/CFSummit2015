@@ -43,15 +43,10 @@
 			}
 			
 			function print(url){
-				alert(url);
+			
 				printer = document.getElementById("printerName").value;
 				email = document.getElementById('sendEmail').checked;
-				
-				alert(email);
-				alert(printer);
-				page = url + "&printer=" + printer + "&email=" + email;
-				alert(page);
-				
+				page = url + "&printer=" + printer + "&email=" + email;	
 				window.location = page;// "http://Shirak-Dell:80/CFSummit2015/BecomeBroker/print.cfm?agencyName=Verdugo_Insurance.pdf&printer=" + printer;
 			}
 		</script>
@@ -287,7 +282,8 @@
 							</h3>
 						</div>
 						<div class="panel-body">
-							
+							<div id="lib_data" ng-bind="libdata">
+							</div>
 						</div>
 					</div>
 					

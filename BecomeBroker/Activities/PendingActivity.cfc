@@ -96,19 +96,21 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 				
 				
 				//start pdf writing process
+				var toAssembleFolder = data.config.path.pending & 'toAssemble\';
+				var originalFolder = data.config.path.pending & 'original\';
 				var pdf = new PDF();				
 				pdf.setFlatten(true)
 				.setSaveoption('linear')
 				.setSource( pending_temp_path & data.pdfFileName )
-				.setDestination( data.config.path.pending & "toAssemble\" & data.pdfFileName )
+				.setDestination( toAssembleFolder & data.pdfFileName )
 				.setOverwrite(true)
 				.write();	
 				
+				fileCopy(toAssembleFolder & data.pdfFileName, originalFolder & data.pdfFileName );
+				
 				//delete temp file from temp folder
 				if ( fileExists(pending_temp_path & data.pdfFileName ) )
-				{
 					filedelete(pending_temp_path & data.pdfFileName );
-				}
 				
 				//update activityCollection with current state data
 				this.setActivityCollection(data);

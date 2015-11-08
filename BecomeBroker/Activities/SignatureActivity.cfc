@@ -42,6 +42,9 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
         	//Signature file
         	//Signature PDF
         	//Destination
+        	//hasSignatureField
+        	//signatureFieldName
+        	
         	//Get the data and assign it to local var
 			var data = this.getActivityCollection();
 			
@@ -55,10 +58,25 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 					var approved_vp_path = data.config.path.approved & "byVP\";
 					var print_path = data.config.path.print;
 					var assets = data.config.path.assets;
+					var originalFolder = data.config.path.pending & 'original\';
 					
-					var pdf = new PDF();
-					cfpdf(  action="sign",
-							source=assets & data.signaturePDFFile,
+					
+					
+					
+				/*	if( isdefined("data.hasSignatureField") && data.hasSignatureField )
+					{
+						cfpdf(  action="si", 
+							signaturefieldname = data.signatureFieldName,
+							source= assets & data.signaturePDFFile,
+							destination=  data.config.path.approved & "temp\temp_signature_" & data.pdfFileName,
+							overwrite=true,
+							keystore=assets & "signatures\" & data.certFile,
+							keystorepassword= data.signaturePassword  );						
+					}
+					else
+					{
+						cfpdf(  action="sign",
+							source= assets & data.signaturePDFFile,
 							destination=  data.config.path.approved & "temp\temp_signature_" & data.pdfFileName,
 							pages="1",
 							Height="50",
@@ -67,6 +85,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 							overwrite=true,
 							keystore=assets & "signatures\" & data.certFile,
 							keystorepassword= data.signaturePassword  );
+					}*/
+					
 	
 		        	var destination = "";
 		        	var source = "";
@@ -75,50 +95,95 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 		        		
 		        		case "CFSummit_Manager.pfx":
 		        		{
+		        			cfpdf(  action="sign",
+							source= assets & data.signaturePDFFile,
+							destination=  data.config.path.approved & "byVP\temp_signature_" & data.pdfFileName,
+							pages="1",
+							Height="50",
+							Width="250",
+							position="#data.position.x#,#data.position.y#",
+							overwrite=true,
+							keystore=assets & "signatures\" & data.certFile,
+							keystorepassword= data.signaturePassword  );
+							
 		        			destination = approved_manager_path & "completed\" & data.pdfFileName ;
-		        			source = approved_manager_path & "tosign\" & data.pdfFileName;
-
+		        			source = originalFolder & data.pdfFileName;
+							//directories to delete using sweeper activity
 							data.directories[1] = approved_manager_path & "tosign\";
-							data.fileType = "*.pdf";	
+							data.fileType = "*.pdf";
+							
+							try
+		                    {
+		                    	var pdfPack = new PDF();
+					        	pdfPack.setDestination( destination )
+					        	.setOverwrite(true);
+					        	pdfPack.AddParam( source= source );
+					        	pdfPack.AddParam( source= data.config.path.approved & "byVP\temp_signature_" & data.pdfFileName );
+					        	pdfPack.setpackage(false);
+					        	pdfPack.Merge();
+		                    }
+		                    catch(Any e)
+		                    {
+		                    	data.message ="*Error* " & e.message;
+					        	wsPublish("BecomeBroker_Channel",data);
+					        	writelog( text=e.detail, application=super.isApplication(), file=super.getExceptionLogFileName() );
+					        	//continue;
+					        	onActivityEnd();
+		                    	
+		                    }		
 		        			break;
 		        		}
 		        		
 		        		case "CFSummit_VP.pfx":
 		        		{
-		        			destination = print_path & data.pdfFileName;
-		        			source = data.config.path.assemble & data.pdfFileName;
+		        			if( isdefined("data.hasSignatureField") && data.hasSignatureField )
+							{
+								destination = print_path & data.pdfFileName;
+								cfpdf(  action="sign", 
+									signaturefieldname = data.signatureFieldName,
+									source= approved_manager_path & "completed\" & data.pdfFileName,
+									destination= destination,
+									overwrite=true,
+									keystore=assets & "signatures\" & data.certFile,
+									keystorepassword= data.signaturePassword  );						
+							}
+							
 		        			
+		        			//source = originalFolder & data.pdfFileName;
+		        			//directories to delete using sweeper activity
 							data.directories[1] = data.config.path.assemble;
 							data.directories[2] = approved_manager_path & "completed\";
 							data.fileType = "*.pdf";
+							
+							/*try
+		                    {
+		                    	var pdfPack = new PDF();
+					        	pdfPack.setDestination( destination )
+					        	.setOverwrite(true);
+					        	pdfPack.AddParam( source=source );
+					        	pdfPack.AddParam( source=data.config.path.approved & "temp\temp_signature_" & data.pdfFileName );
+					        	pdfPack.setpackage(false);
+					        	pdfPack.Merge();
+		                    }
+		                    catch(Any e)
+		                    {
+		                    	data.message ="*Error* " & e.message;
+					        	wsPublish("BecomeBroker_Channel",data);
+					        	writelog( text=e.detail, application=super.isApplication(), file=super.getExceptionLogFileName() );
+					        	//continue;
+					        	onActivityEnd();
+		                    	
+		                    }	*/	
 		        			break;
 		        		}
 		        	}
 		        	
-		        	writelog( text=destination, file=super.getLogFileName() );
-		        	writelog( text=source, file=super.getLogFileName() );
+		        	//writelog( text=destination, file=super.getLogFileName() );
+		        	//writelog( text=source, file=super.getLogFileName() );
 		        	
-		        	try
-                    {
-                    	var pdfPack = new PDF();
-			        	pdfPack.setDestination( destination )
-			        	.setOverwrite(true);
-			        	pdfPack.AddParam( source=source );
-			        	pdfPack.AddParam( source=data.config.path.approved & "temp\temp_signature_" & data.pdfFileName );
-			        	pdfPack.setpackage(false);
-			        	pdfPack.Merge();
-                    }
-                    catch(Any e)
-                    {
-                    	data.message ="*Error* " & e.message;
-			        	wsPublish("BecomeBroker_Channel",data);
-			        	writelog( text=e.detail, application=super.isApplication(), file=super.getExceptionLogFileName() );
-			        	//continue;
-			        	onActivityEnd();
-                    	
-                    }		        	
+		        	        	
 		        	
-		        	data.directories[3] = data.config.path.approved & "temp\";
+		        	//data.directories[3] = data.config.path.approved & "temp\";
 		        	this.setActivityCollection(data);		 	
 		        	
 		        	if( fileExists(data.config.path.approved & "temp\temp_signature_" & data.pdfFileName) )

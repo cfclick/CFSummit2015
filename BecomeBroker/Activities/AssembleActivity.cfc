@@ -138,7 +138,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 							
 						//copy file for manager signature
 						fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
-						
+						fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
 						//delete files		
 						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
 							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);

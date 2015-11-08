@@ -7,7 +7,7 @@
 		<cfset activityManager.executeBecomeBrokerProcess( PDF.Content ) />
 		
 		<h3>
-			Thank you you have successfully submitted your application.
+			You have successfully submitted your application.
 		</h3>
 		<p>
 			Your request is in approval process. Once approved, we will email your application for your signature.

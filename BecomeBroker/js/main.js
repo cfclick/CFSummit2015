@@ -2,14 +2,18 @@ var app = angular.module("BecomeBroker",[]);
 
 app.controller("MainController", function($scope){
 	
-	$scope.message = "";
+	$scope.message = ""; //holds result of current received data from server
+	$scope.libdata = "";
 	
 	$scope.listenToWebSocket = function(aEvent,aToken) 
 	{
-		$scope.currentMessage = {}; //holds result of current received data from server
 	 	if(aEvent.data)
 	 	{	 			
 			$scope.message = $scope.message + aEvent.data.MESSAGE  + "\n";
+			if(aEvent.data.FILEINFO)
+			{
+				$scope.libdata = $scope.libdata + aEvent.data.FILEINFO.name + "\n";
+			}
 			
 			if(aEvent.data.REFRESH)
 			{
