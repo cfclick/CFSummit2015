@@ -26,8 +26,10 @@
 				data = {};
 				data.fileInfo = fileInfo;
 				data.message = message;
-				data.refresh = true;
+				data.refresh = false;
+				
 				wsPublish("BecomeBroker_Channel",data);
+				
 				activityCollection = {};
 				activityCollection.pdfFileName = fileInfo.name;
 				activityCollection.printer = "Samsung M2020 Series";
@@ -37,9 +39,11 @@
 				filecopy( fd.filename, activityCollection.config.path.print );
 							
 		    	emailActivity = new BecomeBroker.Activities.EmailActivity();
-		    	printActivity = new BecomeBroker.Activities.PrintActivity( emailActivity );		    	    	
-				printActivity.setActivityCollection( activityCollection );
-				printActivity.execute();		
+		    	emailActivity.setActivityCollection(activityCollection);
+		    	emailActivity.execute();
+		    	//printActivity = new BecomeBroker.Activities.PrintActivity( emailActivity );		    	    	
+				//printActivity.setActivityCollection( activityCollection );
+				//printActivity.execute();		
 			}
         }
         catch(Any e)

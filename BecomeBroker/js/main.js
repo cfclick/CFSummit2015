@@ -10,6 +10,7 @@ app.controller("MainController", function($scope){
 	 	if(aEvent.data)
 	 	{	 			
 			$scope.message = $scope.message + aEvent.data.MESSAGE  + "\n";
+			//alert(JSON.stringify(aEvent.data));
 			if(aEvent.data.FILEINFO)
 			{
 				$scope.libdata = $scope.libdata + aEvent.data.FILEINFO.name + "\n";

@@ -27,6 +27,7 @@ component  output="false"
 		
 		activityCollection.directories = [];
 		activityCollection.directories[1] = activityCollection.config.path.app & "documents_process";
+		activityCollection.directories[2] = activityCollection.config.path.app & "Listener";
 		activityCollection.fileType = "*.pdf";	
 		var sweeper = new Activities.SweeperActivity().setActivityCollection(activityCollection).execute(); 	
 	}

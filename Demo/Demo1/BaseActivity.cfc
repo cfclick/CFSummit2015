@@ -15,7 +15,7 @@
 	}
 	
 	private numeric function getSleepTime(){
-		return 3000;
+		return 1000;
 	}
 	
 	public function init( IActivity successor)

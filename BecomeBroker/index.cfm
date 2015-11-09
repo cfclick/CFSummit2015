@@ -47,7 +47,7 @@
 				printer = document.getElementById("printerName").value;
 				email = document.getElementById('sendEmail').checked;
 				page = url + "&printer=" + printer + "&email=" + email;	
-				window.location = page;// "http://Shirak-Dell:80/CFSummit2015/BecomeBroker/print.cfm?agencyName=Verdugo_Insurance.pdf&printer=" + printer;
+				window.location = page;
 			}
 		</script>
 	</head>

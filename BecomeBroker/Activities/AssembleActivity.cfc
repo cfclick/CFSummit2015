@@ -87,7 +87,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 						/*try
 	                    {
 	                    	//create PDF realtime from any website
-	                    	cfhtmltopdf(destination= assets & "htmlsource.pdf",
+	                    	cfhtmltopdf(destination= assets & "htmlsourceLive.pdf",
 			  							source="http://www.foxnews.com/",
 			  							orientation="landscape",
 			  							pagetype="letter",
@@ -104,7 +104,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 	                    catch(Any e)
 	                    {
 	                    	writelog( text=e.message, file=super.getExceptionLogFileName() );
-	                    	cfdocument(format="PDF" , filename= assets & "htmlsource.pdf", overwrite="true", ownerpassword="owner"    ){
+	                    	cfdocument(format="PDF" , filename= assets & "htmlsourceLive.pdf", overwrite="true", ownerpassword="owner"    ){
 	                    		writedump(e);
 	                    	}
 	                    	continue;
@@ -112,8 +112,8 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 	                    }finally{
 	                    	
 	                    	continue;
-	                    }*/
-						
+	                    }
+						*/
 						
 		  				try
 	                    {
@@ -128,7 +128,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 			  				pdf.addParam(source= assets & "CFSummit2015-digital-signature.pptx");
 			  				pdf.addParam(source= assets & "CFWfS_diagram.vsdx");
 			  				pdf.addParam(source= assets & "MyList.xlsx");
-			  				//pdf.addParam(source= assets & "htmlsource.pdf", password="owner" );		  					  				
+			  				//pdf.addParam(source= assets & "htmlsourceLive.pdf", password="owner" );		  					  				
 			  				pdf.merge();
 	                  	}
 	                  	catch(Any e)
@@ -138,7 +138,7 @@ component  implements="IActivity" extends="BaseActivity" output="false" accessor
 							
 						//copy file for manager signature
 						fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
-						fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
+						//fileCopy(data.config.path.assemble & data.pdfFileName, approved_manager_path & "tosign\" & data.pdfFileName );
 						//delete files		
 						if (fileExists( data.config.path.pending & "toAssemble\" & data.pdfFileName ))
 							filedelete(data.config.path.pending & "toAssemble\" & data.pdfFileName);
