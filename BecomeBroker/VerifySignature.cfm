@@ -1,27 +1,20 @@
 <cfscript>
 	if( isdefined("PDF.Content"))
 	{
-		cfpdfform(action="read", source=PDF.Content, result="myPDF");
-		//extract agency name from pdf form
-		level1 = PDFStructure['topmostSubform[0]'];
-		level2 = level1['Page1[0]'];
-		agencyNameTemp = level2['Agency_Name[0]'];
-		//replace any empty space with _
-		agencyname = Replace(agencyNameTemp,' ','_','All');
 		
 		activityCollection.config = {};
 		activityCollection.config = new Config().GetEnvironment();
 	
 		cffile(action="write", output=PDF.Content, 
-	        file=activityCollection.config.path.archive & agencyname & ".pdf");
+	        file=activityCollection.config.path.archive & "Archived.pdf");
 	        
 	    cfpdf(name="verify", 
 		action="validatesignature", 
-		source=activityCollection.config.path.archive & agencyname & ".pdf");
+		source=activityCollection.config.path.archive & "Archived.pdf");
 		
 		if(comparenocase(verify.Success,"YES") eq 0 )
 		{
-			writeOutput("Your request complete, welcome to Century-National as broker");
+			writeOutput("Your request completed, welcome to Global Insurance as broker");
 			
 			cfpdf( action="archive", 
 					source=activityCollection.config.path.archive & agencyname & ".pdf",

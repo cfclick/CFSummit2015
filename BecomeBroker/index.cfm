@@ -54,12 +54,12 @@
 	<body>
 		<cfparam name="url.message" default="">
 		<cfparam name="url.type" default="">
-		<div id="mainContainer" class="container-fluid" ng-controller="MainController as mctrl">
+		<div id="mainContainer" class="container" ng-controller="MainController as mctrl">
 			<h1>
 				PDF Signatures 
 			</h1>
 			<div class="row">
-				<div class="col-lg-5">
+				<div class="col-sm-7">
 					<div class="btn-group btn-group-justified" role="group">
 						<cfoutput>
 							<a class="btn btn-danger" 
@@ -261,7 +261,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-4">
+				<div class="col-sm-5">
 					
 					<div class="panel panel-success">
 						<div class="panel-heading">

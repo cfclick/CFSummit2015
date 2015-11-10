@@ -1,9 +1,11 @@
 <cfscript>
 	//Last Activity execute
 	ThirdActivity = new ThirdActivity();
+	
 	//Second Activity to execute
 	//inject third activity into second
 	secondActivity = new SecondActivity( ThirdActivity );
+	
 	//First Activity to execute
 	//inject second activity to first
 	firstActivity = new FirstActivity( secondActivity );
